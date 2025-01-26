@@ -35,6 +35,7 @@ RUN apk add --no-cache \
     php81-pdo_sqlite \
     php81-pdo_mysql \
     php81-pdo_pgsql \
+    php81-redis \
     supervisor
 
 # Configure nginx - http
@@ -51,7 +52,6 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add application
 COPY blessing-skin-server/ /var/www/html/
-RUN mv .env.example .env
 RUN php artisan key:generate
 
 RUN mkdir /data

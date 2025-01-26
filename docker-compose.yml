@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_USER: blessingskin
+      MYSQL_PASSWORD: blessingskinpswd
+      MYSQL_DATABASE: blessingskin
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - '3306'
+    networks:
+      - backend
+    volumes:
+      - /home/yusux/Games/blessing-skin/db:/var/lib/mysql
+  server:
+    build:
+      context: ./minecraft-blessing-skin-docker
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 25580:8080
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - /home/yusux/Games/blessing-skin/server:/data
+    depends_on:
+      - db
+
+
+networks:
+  backend:
+    driver: bridge
+    internal: true
+  frontend:
+    driver: bridge
+    enable_ipv6: true
